@@ -1,0 +1,24 @@
+def binary_search_recursive(nums, target, left, right):
+  
+     
+    if left > right:
+        return -1 #если границы пересеклись то элемента нет
+
+    mid = (left + right) // 2
+    if nums[mid] == target:
+        return mid
+        
+    elif target < nums[mid]:
+        return binary_search_recursive(nums, target, left, mid - 1) #если target меньше среднего элемента то ищем в левой половине
+    else:
+        return binary_search_recursive(nums, target, mid + 1, right)
+
+nums = [1, 3, 5, 7, 9, 11, 13, 15]  
+target = 15  
+
+result = binary_search_recursive(nums, target, 0, len(nums) - 1)
+
+if result != -1:
+    print("элемент найден, индекс:", result)
+else:
+    print("элемент не найден.")
