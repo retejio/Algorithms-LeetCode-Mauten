@@ -1,0 +1,36 @@
+import random
+
+def partition(arr, low, high):
+    pivot = arr[high]  #опорный элемент это последний элемент подмассива
+    i = low - 1  #i хранит индекс последнего элемента который меньше или равен pivot
+
+    for j in range(low, high):  #проходим по всем элементам t
+        if arr[j] <= pivot:  
+            i += 1 
+            arr[i], arr[j] = arr[j], arr[i]  
+
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]  #ставим pivot на его правильную позицию
+    return i + 1  
+
+def quick_select(arr, k):
+    low = 0  #
+    high = len(arr) - 1  
+    while True:  #цикл продолжается пока не найдём k-й элемент
+        random_index = random.randint(low, high)  #выбираем случайный pivot
+        arr[random_index], arr[high] = arr[high], arr[random_index]  #перемещаем его в конец
+
+        s = partition(arr, low, high)  #делим массив относительно pivot
+
+        if s == k:  #если позиция pivot совпала с k
+            return arr[s]  #мы нашли k-й наименьший элемент
+
+        elif s > k:  #если pivot оказался правее k
+            high = s - 1  #ищем элемент только в левой части массива
+
+        else:  #если pivot оказался левее k
+            low = s + 1  #ищем элемент только в правой части массива
+
+arr = [7, 10, 4, 3, 20, 15]  
+k = 3
+result = quick_select(arr, k)  
+print("k-й наименьший элемент:", result)
