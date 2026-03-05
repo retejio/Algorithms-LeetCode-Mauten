@@ -1,0 +1,27 @@
+import random 
+
+def partition(arr, low, high):
+    pivot_index = random.randint(low, high)  #pivot=случайный элемент
+    arr[low], arr[pivot_index] = arr[pivot_index], arr[low]  #меняем с первым
+    pivot = arr[low]
+    i = low + 1
+    for j in range(low + 1, high + 1):
+        if arr[j] < pivot:
+            arr[i], arr[j] = arr[j], arr[i]
+            i += 1
+    arr[low], arr[i - 1] = arr[i - 1], arr[low]
+    return i - 1
+
+def quick_select(arr, low, high, k):
+    s = partition(arr, low, high)  #делим массив
+    if k == s:  #если pivot — искомый элемент
+        return arr[s]
+    elif k < s:  #если элемент слева
+        return quick_select(arr, low, s - 1, k)
+    else:  #если элемент справа
+        return quick_select(arr, s + 1, high, k)
+
+
+arr = [3, 1, 8, 7, 2, 5, 4, 9, 6]
+k = 4 
+print(quick_select(arr, 0, len(arr) - 1, k))
