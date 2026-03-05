@@ -1,0 +1,29 @@
+import random
+
+def partition(arr, low, high): #Ломуто
+    pivot = arr[high]  #опорный элемент это последний элемент подмассива
+    i = low - 1  #i хранит индекс последнего элемента который меньше или равен pivot
+
+    for j in range(low, high):  #проходим по всем элементам подмассива кроме pivot
+        if arr[j] <= pivot:  
+            i += 1  #сдвигаем границу элементов которые меньше pivot
+            arr[i], arr[j] = arr[j], arr[i]  #меняем местами элементы чтобы меньшие элементы оказались слева
+
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]  #ставим pivot на его правильную позицию в массиве
+    return i + 1 
+    
+def quick_sort(arr, low, high):
+    if low < high:  
+        random_index = random.randint(low, high)  #выбираем случайный индекс чтобы сделать рандомизацию pivot
+        arr[random_index], arr[high] = arr[high], arr[random_index]  #меняем случайный элемент с последним чтобы pivot был случайным
+
+        s = partition(arr, low, high)  #делим массив относительно pivot
+
+        quick_sort(arr, low, s - 1)  #рекурсивно сортируем левую часть массива
+        quick_sort(arr, s + 1, high)  #рекурсивно сортируем правую часть массива
+
+
+arr = [13, 4, 8, 9, 2, 7]  
+print("исходный массив:", arr)
+quick_sort(arr, 0, len(arr) - 1)  
+print("отсортированный массив:", arr)
