@@ -1,0 +1,11 @@
+def quick_sort(arr):
+    if len(arr) <= 1:
+        return arr  
+pivot = arr[len(arr) // 2]  #выбираем опорный элемент из середины массива
+
+    left = [x for x in arr if x < pivot]  #массив элементов меньше опорного
+    middle = [x for x in arr if x == pivot]  #массив элементов равных опорному
+
+    right = [x for x in arr if x > pivot]  #массив элементов больше опорного
+
+    return quick_sort(left) + middle + quick_sort(right)  #рекурсивно сортируем части массива
