@@ -1,0 +1,113 @@
+import random
+import time
+import matplotlib.pyplot as plt
+
+
+def selection_sort(arr):
+    n = len(arr)
+
+    for i in range(n - 1):
+        min_index = i
+
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_index]:
+                min_index = j
+
+        arr[i], arr[min_index] = arr[min_index], arr[i]
+
+    return arr
+
+
+def quick_sort(arr):
+    if len(arr) <= 1:
+        return arr
+
+    pivot = arr[len(arr) // 2]
+
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+
+    return quick_sort(left) + middle + quick_sort(right)
+
+
+def generate_random(n):
+    return [random.randint(0, 100000) for _ in range(n)]
+
+
+def generate_sorted(n):
+    return list(range(n))
+
+
+def measure_average_time(sort_function, arr):
+
+    total = 0
+
+    for i in range(5):
+
+        start = time.perf_counter()
+
+        sort_function(arr.copy())
+
+        end = time.perf_counter()
+
+        total += end - start
+
+    return total / 5
+
+
+sizes = [1000, 5000, 10000, 20000]
+
+# для случайных данных
+selection_random = []
+quick_random = []
+
+# для отсортированных данных
+selection_sorted = []
+quick_sorted = []
+
+
+# тест случайного массива
+for size in sizes:
+
+    arr = generate_random(size)
+
+    selection_random.append(measure_average_time(selection_sort, arr))
+    quick_random.append(measure_average_time(quick_sort, arr))
+
+
+# тест отсортированного массива
+for size in sizes:
+
+    arr = generate_sorted(size)
+
+    selection_sorted.append(measure_average_time(selection_sort, arr))
+    quick_sorted.append(measure_average_time(quick_sort, arr))
+
+
+# график для случайных данных
+plt.figure()
+
+plt.plot(sizes, selection_random, label="Selection Sort")
+plt.plot(sizes, quick_random, label="Quick Sort")
+
+plt.xlabel("Размер массива")
+plt.ylabel("Среднее время (сек)")
+plt.title("Случайный массив")
+
+plt.legend()
+plt.show()
+
+
+# график для отсортированных данных
+plt.figure()
+
+plt.plot(sizes, selection_sorted, label="Selection Sort")
+plt.plot(sizes, quick_sorted, label="Quick Sort")
+
+plt.xlabel("Размер массива")
+plt.ylabel("Среднее время (сек)")
+plt.title("Отсортированный массив")
+
+plt.legend()
+plt.show()
