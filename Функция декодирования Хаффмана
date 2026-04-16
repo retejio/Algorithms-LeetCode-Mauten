@@ -1,0 +1,24 @@
+def huffman_decode(encoded, codes):
+    s = {}  #словарь для кодов 
+
+    for ch in codes:
+        s[codes[ch]] = ch  
+
+    result = ""  #сюда собираем итоговую строку
+    c = ""  #текущая последовательность бит
+
+    for bit in encoded:
+        c += bit  #добавляем бит к текущей последовательности
+
+        if c in s:  #если нашли совпадение в таблице
+            result += s[c]  #добавляем соответствующий символ
+            c = ""  #сбрасываем текущую строку
+
+    return result  #возвращаем декодированную строку
+
+encoded = "110111000110"  
+codes = {'g': '00', 'e': '01', 'l': '10', 'a': '110', 'n': '111'}  
+
+decoded = huffman_decode(encoded, codes) 
+
+print("расшифровка:", decoded)  
