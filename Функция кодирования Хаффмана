@@ -1,0 +1,48 @@
+import heapq
+
+def huffman_encode(text):
+    s = {}  #словарь для хранения частоты каждого символа
+
+    for ch in text:
+        s[ch] = s.get(ch, 0) + 1  
+
+    pq = []  #очередь с приоритетом минимальная куча
+    counter = 0 
+
+    for ch in s:
+        heapq.heappush(pq, (s[ch], counter, ch))  
+        counter += 1 
+
+    while len(pq) > 1:  #пока больше одного узла продолжаем строить дерево
+        f1, _, left = heapq.heappop(pq)  #достаем узел с минимальной частотой
+        f2, _, right = heapq.heappop(pq)  #достаем второй минимальный
+
+        heapq.heappush(pq, (f1 + f2, counter, (left, right)))  #объединяем в новый узел
+        counter += 1  
+
+    tree = pq[0][2]  #в куче остался один элемент это корень дерева
+
+    codes = {}  #сюда будем записывать коды символов
+
+    def build(node, path):
+        if isinstance(node, str):  
+            codes[node] = path  #записываем путь как код
+            return
+
+        left, right = node  #распаковываем потомков
+        build(left, path + "0")  #идем влево, добавляем 0 к коду
+        build(right, path + "1")  #идем вправо, добавляем 1 к коду
+
+    build(tree, "")  #запускаем обход дерева с пустого пути
+
+    encoded = ""  
+
+    for ch in text:
+        encoded += codes[ch]  #каждый символ заменяем его кодом
+
+    return encoded, codes  #возвращаем закодированную строку и таблицу кодов
+text = "angel" 
+encoded, codes = huffman_encode(text)  
+
+print("кодировка:", encoded)  
+print("коды:", codes)  
